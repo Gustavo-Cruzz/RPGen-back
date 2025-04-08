@@ -1,39 +1,31 @@
-import requests
+from google import genai
+from dotenv import load_dotenv
+import os
 
 class Text_Gen():
-    def gerar_texto_com_gemini(self, prompt, api_key):
+    def generate_text(self, prompt):
         """
         Envia um prompt para a API do Gemini e retorna o texto gerado.
 
         Args:
             prompt (str): O prompt de texto a ser enviado para o modelo.
-            api_key (str): Sua chave de API do Gemini.
 
         Returns:
             str: O texto gerado pelo modelo, ou None em caso de erro.
         """
-
-        url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent"
-        headers = {
-            "Content-Type": "application/json",
-            "x-goog-api-key": api_key
-        }
-        data = {
-            "contents": [{
-                "parts": [{
-                    "text": prompt
-                }]
-            }]
-        }
-
+        load_dotenv()
         try:
-            response = requests.post(url, headers=headers, json=data)
-            response.raise_for_status()  # Lança uma exceção para status de erro (4xx ou 5xx)
-            result = response.json()
-            return result['candidates'][0]['content']['parts'][0]['text']
-        except requests.exceptions.RequestException as e:
-            print(f"Erro na requisição: {e}")
-            return None
-        except (KeyError, IndexError, TypeError) as e:
-            print(f"Erro ao processar a resposta: {e}")
+            client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
+
+            response = client.models.generate_content(
+                model="gemini-2.0-flash",
+                contents=[prompt]
+            )
+
+            if response.text:
+                return response.text
+            else:
+                return None
+        except Exception as e:
+            print(f"Error during text generation: {e}")
             return None

@@ -1,10 +1,10 @@
 import requests
-import json
+from google import genai
 from dotenv import load_dotenv
 import os
 
 class Image_Gen():
-    def gerar_imagem_com_gemini(self, prompt, api_key):
+    def generate_image(self, prompt):
         """
         Envia um prompt para a API do Gemini e retorna a URL da imagem gerada.
 
@@ -16,24 +16,15 @@ class Image_Gen():
             str: A URL da imagem gerada, ou None em caso de erro.
         """
 
-        url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro-vision:generateContent" 
-        headers = {
-            "Content-Type": "application/json",
-            "x-goog-api-key": api_key
-        }
-        data = {
-            "contents": [{
-                "parts": [{
-                    "text": prompt
-                }]
-            }]
-        }
-
+        load_dotenv()
         try:
-            response = requests.post(url, headers=headers, json=data)
-            response.raise_for_status()
-            result = response.json()
-            return result['candidates'][0]['content']['parts'][0]['inlineData']['data']
+            client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
+
+            response = client.models.generate_content(
+                model="gemini-2.0-flash",
+                contents=[prompt]
+            )
+
         except requests.exceptions.RequestException as e:
             print(f"Erro na requisição: {e}")
             return None

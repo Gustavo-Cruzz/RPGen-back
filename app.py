@@ -1,16 +1,20 @@
 from flask import Flask, request, jsonify
 from api.text_generation import Text_Gen
 from api.image_generation import Image_Gen
-from dotenv import load_dotenv
+from flask_cors import CORS
 import os
 
 app = Flask(__name__)
 
 text_generator = Text_Gen()
 image_generator = Image_Gen()
+frontend_url = os.environ.get("VERCEL_FRONTEND_URL")
 
-load_dotenv()
-api_key = os.getenv("API_KEY")
+if frontend_url:
+    CORS(app, origins=[frontend_url])
+else:
+    print("Warning: VERCEL_FRONTEND_URL environment variable not set. CORS might be open.")
+    CORS(app) # Consider a more restrictive default if the env var is missing
 
 @app.route('/api/gerar-texto', methods=['POST'])
 def gerar_texto():
@@ -18,14 +22,14 @@ def gerar_texto():
         data = request.get_json()
         prompt = data['prompt']
 
-        texto_gerado = text_generator.generate_text(prompt, api_key)
+        texto_gerado = text_generator.generate_text(prompt)
 
         if texto_gerado:
-            return jsonify({'texto_gerado': texto_gerado})
+            return jsonify({'Generated Text': texto_gerado})
         else:
-            return jsonify({'erro': 'Falha ao gerar o texto.'}), 500
+            return jsonify({'error': 'Error during text generation'}), 500
     except Exception as e:
-        return jsonify({'erro': str(e)}), 500
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/api/gerar-imagem', methods=['POST'])
 def gerar_imagem():
@@ -33,14 +37,13 @@ def gerar_imagem():
         data = request.get_json()
         prompt = data['prompt']
 
-        imagem_base64 = image_generator.generate_image(prompt, api_key)
+        imagem_base64 = image_generator.generate_image(prompt)
 
         if imagem_base64:
             return jsonify({'imagem_base64': imagem_base64})
         else:
-            return jsonify({'erro': 'Falha ao gerar a imagem.'}), 500
+            return jsonify({'error': 'Error during image generation'}), 500
     except Exception as e:
-        return jsonify({'erro': str(e)}), 500
+        return jsonify({'error': str(e)}), 500
 
-if __name__ == '__main__':
-    app.run(debug=True)
+app.run(debug=True)
