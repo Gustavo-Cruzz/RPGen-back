@@ -17,7 +17,7 @@ else:
     CORS(app) 
 
 @app.route('/api/gerar-texto', methods=['POST'])
-def gerar_texto(prompt):
+def gerar_texto():
     try:
         data = request.get_json()
         prompt = data['prompt']
@@ -32,7 +32,7 @@ def gerar_texto(prompt):
         return jsonify({'error': str(e)}), 500
 
 @app.route('/api/gerar-imagem', methods=['POST'])
-def gerar_imagem(prompt):
+def gerar_imagem():
     try:
         data = request.get_json()
         prompt = data['prompt']
