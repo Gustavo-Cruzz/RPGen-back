@@ -14,7 +14,7 @@ if frontend_url:
     CORS(app, origins=[frontend_url])
 else:
     print("Warning: VERCEL_FRONTEND_URL environment variable not set. CORS might be open.")
-    CORS(app) # Consider a more restrictive default if the env var is missing
+    CORS(app) 
 
 @app.route('/api/gerar-texto', methods=['POST'])
 def gerar_texto():
