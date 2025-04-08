@@ -18,7 +18,6 @@ else:
 
 @app.route('/api/gerar-texto', methods=['POST'])
 def gerar_texto(prompt):
-    return 200
     try:
         data = request.get_json()
         prompt = data['prompt']
@@ -46,5 +45,3 @@ def gerar_imagem(prompt):
             return jsonify({'error': 'Error during image generation'}), 500
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-
-app.run(debug=True)
