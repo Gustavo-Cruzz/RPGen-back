@@ -18,6 +18,7 @@ else:
 
 @app.route('/api/gerar-texto', methods=['POST'])
 def gerar_texto(prompt):
+    return 200
     try:
         data = request.get_json()
         prompt = data['prompt']
