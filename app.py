@@ -10,11 +10,11 @@ text_generator = Text_Gen()
 image_generator = Image_Gen()
 frontend_url = os.environ.get("VERCEL_FRONTEND_URL")
 
-if frontend_url:
-    CORS(app, origins=[frontend_url])
-else:
-    print("Warning: VERCEL_FRONTEND_URL environment variable not set. CORS might be open.")
-    CORS(app) 
+# if frontend_url:
+#     CORS(app, origins=[frontend_url])
+# else:
+#     print("Warning: VERCEL_FRONTEND_URL environment variable not set. CORS might be open.")
+CORS(app) 
 
 @app.route('/api/gerar-texto', methods=['POST'])
 def gerar_texto():
