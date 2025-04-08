@@ -47,4 +47,4 @@ def gerar_imagem(prompt):
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-app.run(debug=False)
+app.run(debug=True)
