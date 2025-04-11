@@ -43,4 +43,4 @@ POST /api/gerar-texto: Receives a JSON to call the Gemini API and generate a Cha
 POST /api/gerar-imagem: Receives a JSON to call the Gemini API and generate a Character's image
 
 ## License
-This project is licensed under the MIT License.
+This project is licensed under the GNU License.
