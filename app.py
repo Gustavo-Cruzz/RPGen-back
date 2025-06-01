@@ -13,9 +13,6 @@ from routes.character_routes import character_bp
 load_dotenv()
 
 app = Flask(__name__)
-from flask_cors import CORS
-
-# Configuração CORS mais abrangente
 CORS(app, resources={
     r"/*": {
         "origins": ["https://rp-gen.vercel.app", "http://localhost:3000"],
@@ -24,6 +21,14 @@ CORS(app, resources={
         "supports_credentials": True
     }
 })
+
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', 'https://rp-gen.vercel.app')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH,OPTIONS')
+    response.headers.add('Access-Control-Allow-Credentials', 'true')
+    return response
 
 # Configuração do Swagger
 swagger_config = {
