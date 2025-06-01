@@ -25,16 +25,6 @@ CORS(app, resources={
     }
 })
 
-# Adicione este handler após a configuração do CORS
-@app.after_request
-def after_request(response):
-    # Adiciona headers CORS para todas as respostas
-    response.headers.add('Access-Control-Allow-Origin', 'https://rp-gen.vercel.app')
-    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
-    response.headers.add('Access-Control-Allow-Credentials', 'true')
-    return response
-
 # Configuração do Swagger
 swagger_config = {
     "headers": [],
