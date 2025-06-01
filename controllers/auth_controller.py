@@ -10,6 +10,31 @@ auth_bp = Blueprint('auth', __name__)
 
 # 🔐 Rota de Registro
 def register():
+    """
+    Registro de novo usuário.
+    ---
+    tags:
+      - Autenticação
+    parameters:
+      - in: body
+        name: corpo
+        required: true
+        schema:
+          type: object
+          properties:
+            username:
+              type: string
+              example: "yasmin"
+            email:
+              type: string
+              example: "yasmin@example.com"
+            password:
+              type: string
+              example: "senha123"
+    responses:
+      201:
+        description: Usuário criado com sucesso
+    """
     data = request.get_json()
 
     # Validação dos dados recebidos
@@ -30,6 +55,30 @@ def register():
 
 # 🔑 Rota de Login
 def login():
+    """
+    Autenticação de usuário.
+    ---
+    tags:
+      - Autenticação
+    parameters:
+      - in: body
+        name: corpo
+        required: true
+        schema:
+          type: object
+          properties:
+            email:
+              type: string
+              example: "yasmin@example.com"
+            password:
+              type: string
+              example: "senha123"
+    responses:
+      200:
+        description: Login realizado com sucesso
+      401:
+        description: Credenciais inválidas
+    """
     data = request.get_json()
 
     if 'email' not in data or 'password' not in data:
