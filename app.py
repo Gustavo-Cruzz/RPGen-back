@@ -13,18 +13,7 @@ from routes.character_routes import character_bp
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app, resources={
-    r"/auth/*": {
-        "origins": ["https://rp-gen.vercel.app", "http://localhost:3000"],
-        "methods": ["GET", "POST", "PUT", "DELETE"],
-        "allow_headers": ["Content-Type", "Authorization"]
-    },
-    r"/characters/*": {
-        "origins": ["https://rp-gen.vercel.app", "http://localhost:3000"],
-        "methods": ["GET", "POST", "PUT", "DELETE"],
-        "allow_headers": ["Content-Type", "Authorization"]
-    }
-})
+CORS(app, origins=["https://rp-gen.vercel.app"])
 # Configuração do Swagger
 swagger_config = {
     "headers": [],
