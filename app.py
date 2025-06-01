@@ -13,8 +13,7 @@ from routes.character_routes import character_bp
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app)
-
+CORS(app, origins=["https://rp-gen.vercel.app", "http://localhost:3000"])
 # Configuração do Swagger
 swagger_config = {
     "headers": [],
