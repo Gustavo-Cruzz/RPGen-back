@@ -7,7 +7,7 @@ load_dotenv()
 
 logging.basicConfig(level=logging.INFO)
 
-MONGO_URI = os.getenv("MONGO_ATLAS_URI")
+MONGO_URI = os.getenv("MONGODB_ATLAS_URI")
 
 
 try:
