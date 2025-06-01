@@ -65,7 +65,7 @@ app.register_blueprint(character_bp, url_prefix='/characters')
 def home():
     return {'message': 'API está online!'}
 
-@app.route('/api/gerar-texto', methods=['POST'])
+@app.route('/gerar-texto', methods=['POST'])
 def gerar_texto():
     """
     Gera um texto com base no prompt fornecido.
@@ -91,7 +91,7 @@ def gerar_texto():
     texto_gerado = text_generator.generate_text(prompt)
     return jsonify({'generated_text': texto_gerado})
 
-@app.route('/api/gerar-imagem', methods=['POST'])
+@app.route('/gerar-imagem', methods=['POST'])
 def gerar_imagem():
     """
     Gera uma imagem com base no prompt fornecido.
