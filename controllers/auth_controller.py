@@ -9,6 +9,7 @@ from utils.token_required import token_required  # certifique-se de que esse arq
 auth_bp = Blueprint('auth', __name__)
 
 # 🔐 Rota de Registro
+@auth_bp.route('/register', methods=['POST'])
 def register():
     """
     Registro de novo usuário.
@@ -54,6 +55,7 @@ def register():
 
 
 # 🔑 Rota de Login
+@auth_bp.route('/login', methods=['POST'])
 def login():
     """
     Autenticação de usuário.
