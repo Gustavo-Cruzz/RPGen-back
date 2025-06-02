@@ -89,7 +89,7 @@ def login():
     if error:
         return jsonify({'error': error}), 401
 
-    return jsonify({'token': token, "user": {"name": data["username"], "email": data["email"]}}), 200
+    return jsonify({'token': token, "user": {"username": data["name"], "email": data["email"]}}), 200
 
 
 # 👤 Rota de perfil do usuário logado
