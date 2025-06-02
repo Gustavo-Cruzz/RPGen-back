@@ -9,7 +9,7 @@ logging.basicConfig(level=logging.INFO)
 MONGO_URI = os.getenv("MONGODB_ATLAS_URI")
 
 try:
-    client = MongoClient(mongodb+srv://gustavocruz:123098@cluster0.061fsly.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0)
+    client = MongoClient(MONGO_URI)
     db = client["rpgen"]
     logging.info("✅ Conectado ao MongoDB com sucesso!")
 except Exception as e:
