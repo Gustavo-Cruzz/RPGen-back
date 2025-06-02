@@ -14,12 +14,23 @@ load_dotenv()
 
 app = Flask(__name__)
 CORS(app, resources={
-    r"/*": { 
+    # This will cover routes like /api/gerar-texto, /api/gerar-imagem
+    r"/api/*": {
+        "origins": ["https://rp-gen.vercel.app", "http://localhost:3000"],
+        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        "allow_headers": ["Content-Type", "Authorization"],
+        "supports_credentials": True
+    },
+    # This is CRITICAL to cover your auth_bp routes which are prefixed with /auth
+    r"/auth/*": {
         "origins": ["https://rp-gen.vercel.app", "http://localhost:3000"],
         "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
         "allow_headers": ["Content-Type", "Authorization"],
         "supports_credentials": True
     }
+    # If you have other blueprints or routes that don't start with /api or /auth
+    # you might need a general rule or specific ones for them.
+    # r"/*": { ... } might be too broad if you want fine-grained control
 })
 # @app.after_request
 # def after_request(response):
