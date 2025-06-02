@@ -6,10 +6,10 @@ import logging
 load_dotenv()
 
 logging.basicConfig(level=logging.INFO)
-
+MONGO_URI = os.getenv("MONGODB_ATLAS_URI")
 
 try:
-    client = MongoClient( os.getenv("MONGODB_ATLAS_URI"))
+    client = MongoClient(MONGO_URI)
     db = client.get_database()
     logging.info("✅ Conectado ao MongoDB com sucesso!")
 except Exception as e:
