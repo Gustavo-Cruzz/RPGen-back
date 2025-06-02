@@ -1,27 +1,21 @@
 {
-    "version": 2,
-    "builds": [
-      {
-        "src": "app/main.py",
-        "use": "@vercel/python"
+  "version": 2,
+  "builds": [
+    {
+      "src": "app/main.py",
+      "use": "@vercel/python",
+      "config": {
+        "maxLambdaSize": "15mb",
+        "runtime": "python3.9",
+        "includeFiles": ["app/**/*.py", "requirements.txt"]
       }
-    ],
-    "routes": [
-      {
-        "src": "/api/(.*)",
-        "dest": "app/main.py"
-      },
-      {
-        "src": "/auth/(.*)",  
-        "dest": "app/main.py"
-      },
-      {
-        "src": "/my-characters/(.*)",
-        "dest": "app/main.py"
-      },
-      {
-        "src": "/",         
-        "dest": "app/main.py"
-      }
-    ]
-  }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "app/main.py",
+      "methods": ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
+    }
+  ]
+}
