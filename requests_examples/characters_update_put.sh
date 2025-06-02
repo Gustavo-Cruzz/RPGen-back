@@ -4,7 +4,7 @@ API_URL="http://localhost:5000"
 TOKEN="coloque_seu_token_aqui"
 CHARACTER_ID="coloque_o_id_aqui"
 
-curl -X PUT "$API_URL/characters/$CHARACTER_ID" \
+curl -X PUT "$API_URL/my-characters/$CHARACTER_ID" \
 -H "Authorization: Bearer $TOKEN" \
 -H "Content-Type: application/json" \
 -d '{

@@ -3,7 +3,7 @@
 API_URL="http://localhost:5000"
 TOKEN="coloque_seu_token_aqui"
 
-curl -X POST "$API_URL/characters" \
+curl -X POST "$API_URL/my-characters" \
 -H "Authorization: Bearer $TOKEN" \
 -H "Content-Type: application/json" \
 -d '{
