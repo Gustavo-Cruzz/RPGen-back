@@ -35,7 +35,7 @@ def authenticate_user(data):
 
         return token, None
 
-    return None, 'Credenciais inválidas.'
+    return None, 'Erro de senha.'
 
 
 def get_user_by_id(user_id):
