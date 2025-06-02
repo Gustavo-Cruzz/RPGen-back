@@ -2,26 +2,26 @@
     "version": 2,
     "builds": [
       {
-        "src": "app.py",
+        "src": "main.py",
         "use": "@vercel/python"
       }
     ],
     "routes": [
       {
         "src": "/api/(.*)",
-        "dest": "app.py"
+        "dest": "main.py"
       },
       {
         "src": "/auth/(.*)",  
-        "dest": "app.py"
+        "dest": "main.py"
       },
       {
         "src": "/my-characters/(.*)",
-        "dest": "app.py"
+        "dest": "main.py"
       },
       {
         "src": "/",         
-        "dest": "app.py"
+        "dest": "main.py"
       }
     ]
   }
