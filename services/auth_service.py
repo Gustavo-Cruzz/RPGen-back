@@ -13,7 +13,7 @@ def register_user(data):
 
     hashed_password = generate_password_hash(data['password'], method='pbkdf2:sha256')
     user = {
-        'name': data['name'],
+        'name': data['username'],
         'email': data['email'],
         'password': hashed_password
     }
