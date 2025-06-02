@@ -2,7 +2,7 @@ from flask import Blueprint
 from controllers import character_controller
 from middlewares.auth_middleware import token_required
 
-character_bp = Blueprint('characters', __name__, url_prefix='/characters')
+character_bp = Blueprint('characters', __name__, url_prefix='/my-characters')
 
 character_bp.route('', methods=['POST'], strict_slashes=False)(token_required(character_controller.create))
 character_bp.route('', methods=['GET'], strict_slashes=False)(token_required(character_controller.read_all))

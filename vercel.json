@@ -16,7 +16,7 @@
         "dest": "app.py"
       },
       {
-        "src": "/characters/(.*)",
+        "src": "/my-characters/(.*)",
         "dest": "app.py"
       },
       {

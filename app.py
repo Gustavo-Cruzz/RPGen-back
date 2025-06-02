@@ -74,7 +74,7 @@ text_generator = Text_Gen()
 image_generator = Image_Gen()
 
 app.register_blueprint(auth_bp, url_prefix='/auth')
-app.register_blueprint(character_bp, url_prefix='/characters')
+app.register_blueprint(character_bp, url_prefix='/my-characters')
 
 @app.route('/')
 def home():
