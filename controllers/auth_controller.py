@@ -23,7 +23,7 @@ def register():
         schema:
           type: object
           properties:
-            username:
+            username: # Changed from 'name' to 'username' based on your Swagger example
               type: string
               example: "yasmin"
             email:
@@ -39,7 +39,7 @@ def register():
     data = request.get_json()
 
     # Validação dos dados recebidos
-    required_fields = ['name', 'email', 'password']
+    required_fields = ['username', 'email', 'password'] # **Changed 'name' to 'username' here**
     for field in required_fields:
         if field not in data:
             return jsonify({'error': f'Campo obrigatório ausente: {field}'}), 400
@@ -52,7 +52,6 @@ def register():
         'message': 'Usuário registrado com sucesso!',
         'user_id': user_id
     }), 201
-
 
 # 🔑 Rota de Login
 @auth_bp.route('/login', methods=['POST'])
