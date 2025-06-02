@@ -13,7 +13,7 @@ def register_user(data):
 
     hashed_password = generate_password_hash(data['password'], method='pbkdf2:sha256')
     user = {
-        'name': data['username'],
+        'username': data['username'],
         'email': data['email'],
         'password': hashed_password
     }
@@ -25,7 +25,7 @@ def register_user(data):
 def authenticate_user(data):
     user = user_collection.find_one({'email': data['email']})
     if not user:
-        return None, 'Credenciais inválidas.'
+        return None, None, 'Credenciais inválidas.' # Return token, user, error
 
     if check_password_hash(user['password'], data['password']):
         token = jwt.encode({
@@ -33,9 +33,18 @@ def authenticate_user(data):
             'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=24)
         }, os.getenv('SECRET_KEY'), algorithm="HS256")
 
-        return token, None
+        # Convert ObjectId to string for JSON serialization
+        user_data_to_return = {
+            "username": user.get('username') or user.get('name'), # Handle both 'username' or 'name'
+            "email": user['email']
+        }
+        if '_id' in user_data_to_return:
+             del user_data_to_return['_id'] 
 
-    return None, 'Erro de senha.'
+        # Now return token, user_data_to_return, and None for error
+        return token, user_data_to_return, None
+
+    return None, None, 'Erro de senha.' # Return token, user, error
 
 
 def get_user_by_id(user_id):

@@ -53,44 +53,24 @@ def register():
         'user_id': user_id
     }), 201
 
-# 🔑 Rota de Login
 @auth_bp.route('/login', methods=['POST'])
 def login():
-    """
-    Autenticação de usuário.
-    ---
-    tags:
-      - Autenticação
-    parameters:
-      - in: body
-        name: corpo
-        required: true
-        schema:
-          type: object
-          properties:
-            email:
-              type: string
-              example: "yasmin@example.com"
-            password:
-              type: string
-              example: "senha123"
-    responses:
-      200:
-        description: Login realizado com sucesso
-      401:
-        description: Credenciais inválidas
-    """
     data = request.get_json()
 
     if 'email' not in data or 'password' not in data:
         return jsonify({'error': 'Email e senha são obrigatórios.'}), 400
 
-    token, error = authenticate_user(data)
+    # Catch all three return values from authenticate_user
+    token, user_info, error = authenticate_user(data)
     if error:
-        return jsonify({'error': error}), 401
+        # Use a consistent generic message for security
+        return jsonify({'error': 'Credenciais inválidas.'}), 401
 
-    return jsonify({'token': token, "user": {"username": data["username"], "email": data["email"]}}), 200
-
+    return jsonify({
+        'message': 'Usuário logado com sucesso', # Added message field
+        'token': token,
+        'user': user_info # Use the user_info returned from authenticate_user
+    }), 200
 
 # 👤 Rota de perfil do usuário logado
 @auth_bp.route('/me', methods=['GET'])
