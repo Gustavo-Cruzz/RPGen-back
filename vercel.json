@@ -8,7 +8,19 @@
     ],
     "routes": [
       {
-        "src": "/(.*)",
+        "src": "/api/(.*)",
+        "dest": "app.py"
+      },
+      {
+        "src": "/auth/(.*)",  
+        "dest": "app.py"
+      },
+      {
+        "src": "/characters/(.*)",
+        "dest": "app.py"
+      },
+      {
+        "src": "/",         
         "dest": "app.py"
       }
     ]
