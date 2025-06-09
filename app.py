@@ -21,24 +21,14 @@ CORS(app, resources={
         "allow_headers": ["Content-Type", "Authorization"],
         "supports_credentials": True
     },
-    # This is CRITICAL to cover your auth_bp routes which are prefixed with /auth
+
     r"/auth/*": {
         "origins": ["https://rp-gen.vercel.app", "http://localhost:3000"],
         "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
         "allow_headers": ["Content-Type", "Authorization"],
         "supports_credentials": True
     }
-    # If you have other blueprints or routes that don't start with /api or /auth
-    # you might need a general rule or specific ones for them.
-    # r"/*": { ... } might be too broad if you want fine-grained control
 })
-# @app.after_request
-# def after_request(response):
-#     response.headers.add('Access-Control-Allow-Origin', 'https://rp-gen.vercel.app')
-#     response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-#     response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH,OPTIONS')
-#     response.headers.add('Access-Control-Allow-Credentials', 'true')
-#     return response
 
 # Configuração do Swagger
 swagger_config = {
