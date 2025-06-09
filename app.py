@@ -76,9 +76,10 @@ image_generator = Image_Gen()
 app.register_blueprint(auth_bp, url_prefix='/auth')
 app.register_blueprint(character_bp, url_prefix='/my-characters')
 
-@app.route('/')
+@app.route('/') #Intentional change to make tests fail
 def home():
-    return {'message': 'API está online!'}
+    return {'message': 'API está offline!'}  # Mudança intencional para causar falha
+
 
 @app.route('/api/gerar-texto', methods=['POST'])
 def gerar_texto():
