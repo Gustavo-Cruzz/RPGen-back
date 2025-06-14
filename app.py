@@ -56,6 +56,6 @@ def create_app():
     # A simple health-check route
     @app.route('/')
     def home():
-        return {'message': 'API is online!'}
+        return {'message': 'API está online!'}
 
     return app
