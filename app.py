@@ -1,126 +1,61 @@
-from flask import Flask, request, jsonify
-from flask_cors import CORS
-from dotenv import load_dotenv
-from flasgger import Swagger
 import os
 import logging
+from flask import Flask
+from flask_cors import CORS
+from flasgger import Swagger
+from dotenv import load_dotenv
 
-from api.text_generation import Text_Gen
-from api.image_generation import Image_Gen
-from routes.auth_routes import auth_bp
-from routes.character_routes import character_bp
+# Import configurations
+from config.swagger import swagger_config, swagger_template
 
-load_dotenv()
+def create_app():
+    """
+    Application Factory: Creates and configures the Flask application.
+    """
+    load_dotenv()
 
-app = Flask(__name__)
-CORS(app, resources={
-    # This will cover routes like /api/gerar-texto, /api/gerar-imagem
-    r"/api/*": {
-        "origins": ["https://rp-gen.vercel.app", "http://localhost:3000"],
-        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-        "allow_headers": ["Content-Type", "Authorization"],
-        "supports_credentials": True
-    },
+    app = Flask(__name__)
 
-    r"/auth/*": {
-        "origins": ["https://rp-gen.vercel.app", "http://localhost:3000"],
-        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-        "allow_headers": ["Content-Type", "Authorization"],
-        "supports_credentials": True
-    }
-})
+    # Configure Logging
+    logging.basicConfig(level=logging.INFO)
 
-# Configuração do Swagger
-swagger_config = {
-    "headers": [],
-    "specs": [
-        {
-            "endpoint": 'apispec',
-            "route": '/apispec.json',
-            "rule_filter": lambda rule: True,  # documenta todas as rotas
-            "model_filter": lambda tag: True
+    # Configure CORS
+    CORS(app, resources={
+        r"/api/*": {
+            "origins": ["[https://rp-gen.vercel.app](https://rp-gen.vercel.app)", "http://localhost:3000"],
+            "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+            "allow_headers": ["Content-Type", "Authorization"],
+            "supports_credentials": True
+        },
+        r"/auth/*": {
+            "origins": ["[https://rp-gen.vercel.app](https://rp-gen.vercel.app)", "http://localhost:3000"],
+            "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+            "allow_headers": ["Content-Type", "Authorization"],
+            "supports_credentials": True
+        },
+        r"/my-characters/*": { # Add this for your character routes
+            "origins": ["[https://rp-gen.vercel.app](https://rp-gen.vercel.app)", "http://localhost:3000"],
+            "methods": ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+            "allow_headers": ["Content-Type", "Authorization"],
+            "supports_credentials": True
         }
-    ],
-    "static_url_path": "/flasgger_static",
-    "swagger_ui": True,
-    "specs_route": "/docs/"
-}
+    })
 
-swagger_template = {
-    "swagger": "2.0",
-    "info": {
-        "title": "RPGen API",
-        "description": "Documentação da API do RPGen com Swagger",
-        "version": "1.0.0"
-    },
-    "basePath": "/",  # prefixo base
-}
+    # Initialize Swagger
+    Swagger(app, config=swagger_config, template=swagger_template)
 
-Swagger(app, config=swagger_config, template=swagger_template)
+    # Import and register blueprints
+    from routes.auth_routes import auth_bp
+    from routes.character_routes import character_bp
+    from routes.api_routes import api_bp # New API blueprint
 
-logging.basicConfig(level=logging.INFO)
+    app.register_blueprint(auth_bp, url_prefix='/auth')
+    app.register_blueprint(character_bp, url_prefix='/my-characters')
+    app.register_blueprint(api_bp, url_prefix='/api') # Register the new blueprint
 
-text_generator = Text_Gen()
-image_generator = Image_Gen()
+    # A simple health-check route
+    @app.route('/')
+    def home():
+        return {'message': 'API está online!'}
 
-app.register_blueprint(auth_bp, url_prefix='/auth')
-app.register_blueprint(character_bp, url_prefix='/my-characters')
-
-@app.route('/')
-def home():
-    return {'message': 'API está online!'}
-
-@app.route('/api/gerar-texto', methods=['POST'])
-def gerar_texto():
-    """
-    Gera um texto com base no prompt fornecido.
-    ---
-    tags:
-      - Geração de Texto
-    parameters:
-      - in: body
-        name: prompt
-        required: true
-        schema:
-          type: object
-          properties:
-            prompt:
-              type: string
-              example: "Um guerreiro encontra um dragão em uma caverna"
-    responses:
-      200:
-        description: Texto gerado com sucesso
-    """
-    data = request.get_json()
-    prompt = data.get('prompt')
-    texto_gerado = text_generator.generate_text(prompt)
-    return jsonify({'generated_text': texto_gerado})
-
-@app.route('/api/gerar-imagem', methods=['POST'])
-def gerar_imagem():
-    """
-    Gera uma imagem com base no prompt fornecido.
-    ---
-    tags:
-      - Geração de Imagem
-    parameters:
-      - in: body
-        name: prompt
-        required: true
-        schema:
-          type: object
-          properties:
-            prompt:
-              type: string
-              example: "Um mago lançando um feitiço"
-    responses:
-      200:
-        description: Imagem gerada com sucesso
-    """
-    data = request.get_json()
-    prompt = data.get('prompt')
-    imagem_base64 = image_generator.generate_image(prompt)
-    return jsonify({'imagem_base64': imagem_base64})
-
-if __name__ == '__main__':
-    app.run(debug=True)
+    return app

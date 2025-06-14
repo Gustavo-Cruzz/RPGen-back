@@ -5,7 +5,8 @@ import pytest
 # Garante que a raiz do projeto está no sys.path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from app import app, text_generator, image_generator
+from run import app
+from routes.api_routes import text_generator, image_generator
 
 @pytest.fixture
 def client():
