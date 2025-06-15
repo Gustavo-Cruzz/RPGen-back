@@ -22,19 +22,19 @@ def create_app():
     # Configure CORS
     CORS(app, resources={
         r"/api/*": {
-            "origins": ["[https://rp-gen.vercel.app](https://rp-gen.vercel.app)", "http://localhost:3000"],
+            "origins": ["https://rp-gen.vercel.app", "http://localhost:3000"],
             "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
             "allow_headers": ["Content-Type", "Authorization"],
             "supports_credentials": True
         },
         r"/auth/*": {
-            "origins": ["[https://rp-gen.vercel.app](https://rp-gen.vercel.app)", "http://localhost:3000"],
+            "origins": ["https://rp-gen.vercel.app", "http://localhost:3000"],
             "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
             "allow_headers": ["Content-Type", "Authorization"],
             "supports_credentials": True
         },
         r"/my-characters/*": { # Add this for your character routes
-            "origins": ["[https://rp-gen.vercel.app](https://rp-gen.vercel.app)", "http://localhost:3000"],
+            "origins": ["https://rp-gen.vercel.app", "http://localhost:3000"],
             "methods": ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
             "allow_headers": ["Content-Type", "Authorization"],
             "supports_credentials": True
@@ -56,6 +56,8 @@ def create_app():
     # A simple health-check route
     @app.route('/')
     def home():
-        return {'message': 'API está online!'}
+        return {'message': 'API is online!'}
 
     return app
+
+app = create_app()
