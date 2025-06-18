@@ -33,7 +33,13 @@ def create_app():
             "allow_headers": ["Content-Type", "Authorization"],
             "supports_credentials": True
         },
-        r"/my-characters/*": { # Add this for your character routes
+        r"/my-characters/*": { 
+            "origins": ["https://rp-gen.vercel.app", "http://localhost:3000"],
+            "methods": ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+            "allow_headers": ["Content-Type", "Authorization"],
+            "supports_credentials": True
+        },
+        r"/character/*": {
             "origins": ["https://rp-gen.vercel.app", "http://localhost:3000"],
             "methods": ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
             "allow_headers": ["Content-Type", "Authorization"],
