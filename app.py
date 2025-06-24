@@ -41,7 +41,7 @@ def create_app():
         },
         r"/my-characters": {
             "origins": ["https://rp-gen.vercel.app", "http://localhost:3000"],
-            "methods": ["GET", "POST", "OPTIONS"],
+            "methods": ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
             "allow_headers": ["Content-Type", "Authorization"],
             "supports_credentials": True
         },
