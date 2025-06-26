@@ -23,12 +23,9 @@ class Image_Gen():
         load_dotenv()
         try:
             client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
-            response = client.models.generate_content(
+            response = client.models.generate_images(
                 model="imagen-4.0-generate-preview-06-06",
-                contents=[prompt],
-                config=types.GenerateImagesConfig(
-                number_of_images= 1,
-                )
+                prompt=prompt
             )
 
             # Check if the response contains candidates (generated images)
@@ -55,3 +52,4 @@ class Image_Gen():
         except Exception as e: 
             print(f"Erro inesperado durante a geração da imagem: {e}")
             return None
+    
