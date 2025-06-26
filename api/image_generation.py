@@ -1,8 +1,11 @@
 import requests
 from google import genai
+from google.genai import types
 from dotenv import load_dotenv
-import os
+import base64
+from PIL import Image
 
+client = genai.Client()
 class Image_Gen():
     def generate_image(self, prompt):
         """
@@ -18,13 +21,15 @@ class Image_Gen():
 
         load_dotenv()
         try:
-            client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
-
             response = client.models.generate_content(
-                model="gemini-2.0-flash",
-                contents=[prompt]
+                model="imagen-4.0-generate-preview-06-06",
+                contents=[prompt],
+                config=types.GenerateImagesConfig(
+                number_of_images=   ,
+                )
             )
-
+            
+            return response
         except requests.exceptions.RequestException as e:
             print(f"Erro na requisição: {e}")
             return None
