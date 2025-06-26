@@ -26,8 +26,8 @@ class Image_Gen():
             response = client.models.generate_content(
                 model="imagen-4.0-generate-preview-06-06",
                 contents=[prompt],
-                generation_config=types.GenerationConfig( 
-                    candidate_count=1, 
+                config=types.GenerateImagesConfig(
+                number_of_images= 1,
                 )
             )
 
